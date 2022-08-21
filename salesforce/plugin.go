@@ -189,11 +189,12 @@ func generateDynamicTables(ctx context.Context, p *plugin.Plugin) *plugin.Table 
 		// to match the original field name. Also, if we convert to snake case,
 		// custom fields like "TestField" and "Test_Field" will result in duplicates
 		var columnFieldName string
-		if strings.HasSuffix(fieldName, "__c") {
+		/*if strings.HasSuffix(fieldName, "__c") {
 			columnFieldName = strings.ToLower(fieldName)
 		} else {
 			columnFieldName = strcase.ToSnake(fieldName)
-		}
+		}*/
+		columnFieldName = fieldName
 
 		column := plugin.Column{
 			Name:        columnFieldName,
@@ -234,7 +235,7 @@ func generateDynamicTables(ctx context.Context, p *plugin.Plugin) *plugin.Table 
 			Hydrate:    listSalesforceObjectsByTable(salesforceTableName, salesforceCols),
 		},
 		Get: &plugin.GetConfig{
-			KeyColumns: plugin.SingleColumn("id"),
+			KeyColumns: plugin.SingleColumn("Id"),
 			Hydrate:    getSalesforceObjectbyID(salesforceTableName),
 		},
 		Columns: cols,
