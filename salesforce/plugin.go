@@ -194,7 +194,7 @@ func generateDynamicTables(ctx context.Context, p *plugin.Plugin) *plugin.Table 
 		} else {
 			columnFieldName = strcase.ToSnake(fieldName)
 		}*/
-		columnFieldName = fieldName
+		columnFieldName = strings.ToLower(fieldName)
 
 		column := plugin.Column{
 			Name:        columnFieldName,
@@ -235,7 +235,7 @@ func generateDynamicTables(ctx context.Context, p *plugin.Plugin) *plugin.Table 
 			Hydrate:    listSalesforceObjectsByTable(salesforceTableName, salesforceCols),
 		},
 		Get: &plugin.GetConfig{
-			KeyColumns: plugin.SingleColumn("Id"),
+			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    getSalesforceObjectbyID(salesforceTableName),
 		},
 		Columns: cols,
