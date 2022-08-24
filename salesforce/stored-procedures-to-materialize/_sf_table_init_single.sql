@@ -40,10 +40,14 @@ BEGIN
 		
 		--Loop for batch
 		For sf_temp_table in  
-		select id FROM salesforce_user 
+		--select id FROM salesforce_user 
+			SELECT
+			 string_agg('''' || id::text ||'''', ',')
+			FROM _sfmt_salesforce_user
+			group by substring(id,18,1), substring(name,1,1)
 		loop 
 			execute('insert into ' || table_name1 ||
-					' select * from ' || table_name0 || ' where ownerid = ''' || sf_temp_table || ''''); 
+					' select * from ' || table_name0 || ' where ownerid in (' || sf_temp_table || ')'); 
 
 		end loop; 
 	
@@ -68,3 +72,4 @@ END
 $BODY$;
 ALTER PROCEDURE public._sf_table_init_single(character varying)
     OWNER TO steampipe;
+
